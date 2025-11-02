@@ -89,6 +89,9 @@
 	</dependencies>
 
 	<build>
+		<!-- Set a stable final name so the produced JAR is always /target/app.jar -->
+		<finalName>app</finalName>
+		
 		<plugins>
 			<!-- Compiler Plugin -->
 			<plugin>
