@@ -5,7 +5,6 @@ RUN mvn -B clean package
 
 FROM eclipse-temurin:21-jre
 WORKDIR /app
-COPY --from=builder /build/target/Balance-Batch-0.0.2-SNAPSHOT.jar app.jar
+COPY --from=builder /build/target/app.jar app.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
-
