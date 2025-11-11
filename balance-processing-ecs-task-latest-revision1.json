@@ -3,7 +3,7 @@
     "containerDefinitions": [
         {
             "name": "balance-container",
-            "image": "502987719615.dkr.ecr.eu-west-3.amazonaws.com/hamzahaddouguiconsole/balance-java-batch-job-registry:058533cef4cda94f11e9894eda33c2334dfd52f1",
+            "image": "PLACEHOLDER",
             "cpu": 0,
             "portMappings": [
                 {
