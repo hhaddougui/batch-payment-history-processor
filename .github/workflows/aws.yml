@@ -33,8 +33,9 @@ on:
 env:
   AWS_REGION: eu-west-3
   ECR_REPOSITORY: hamzahaddouguiconsole/balance-java-batch-job-registry
-  ECS_SERVICE: balance-process-ecs-service-idai8lsy
+  IMAGE_TAG: ${{ github.sha }}
   ECS_CLUSTER: haddouguihamza-engineer-balance-cluster
+  ECS_SERVICE: balance-process-ecs-service-idai8lsy
   ECS_TASK_DEFINITION: balance-processing-ecs-task-latest-revision1.json
   CONTAINER_NAME: balance-container
 
@@ -78,7 +79,7 @@ jobs:
       id: build-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_TAG: ${{ github.sha }}
+        IMAGE_TAG: ${{ env.IMAGE_TAG }}
       run: |
         # Build a docker container and
         # push it to ECR so that it can
