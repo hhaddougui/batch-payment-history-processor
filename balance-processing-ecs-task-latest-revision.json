@@ -1,0 +1,63 @@
+{
+  "family": "balance-processing-ecs-task-latest",
+  "executionRoleArn": "arn:aws:iam::502987719615:role/Deploy-to-ECS-github-action",
+  "taskRoleArn": "arn:aws:iam::502987719615:role/Deploy-to-ECS-github-action",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "1024",
+  "memory": "2048",
+  "runtimePlatform": {
+    "cpuArchitecture": "X86_64",
+    "operatingSystemFamily": "LINUX"
+  },
+  "containerDefinitions": [
+    {
+      "name": "balance-container",
+      "image": "PLACEHOLDER",
+      "essential": true,
+      "cpu": 0,
+      "environment": [],
+      "portMappings": [
+        {
+          "appProtocol": "http",
+          "containerPort": 8080,
+          "hostPort": 8080,
+          "name": "balance-container-80-tcp",
+          "protocol": "tcp"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/balance-process-ecstasks-definintion",
+          "awslogs-create-group": "true",
+          "awslogs-region": "eu-west-3",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "mountPoints": [],
+      "systemControls": [],
+      "volumesFrom": []
+    }
+  ],
+  "volumes": [],
+  "placementConstraints": [],
+  "compatibilities": [
+    "EC2",
+    "MANAGED_INSTANCES",
+    "FARGATE"
+  ],
+  "requiresAttributes": [
+    { "name": "com.amazonaws.ecs.capability.logging-driver.awslogs" },
+    { "name": "ecs.capability.execution-role-awslogs" },
+    { "name": "com.amazonaws.ecs.capability.ecr-auth" },
+    { "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19" },
+    { "name": "com.amazonaws.ecs.capability.task-iam-role" },
+    { "name": "ecs.capability.execution-role-ecr-pull" },
+    { "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18" },
+    { "name": "ecs.capability.task-eni" },
+    { "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29" }
+  ]
+}
