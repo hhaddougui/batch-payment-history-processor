@@ -36,7 +36,7 @@ env:
   IMAGE_TAG: ${{ github.sha }}
   ECS_CLUSTER: haddouguihamza-engineer-balance-cluster
   ECS_SERVICE: balance-process-ecs-service-idai8lsy
-  ECS_TASK_DEFINITION: balance-processing-ecs-task-latest-revision1.json
+  ECS_TASK_DEFINITION: balance-processing-ecs-task-latest-revision.json
   CONTAINER_NAME: balance-container
 
 permissions:
