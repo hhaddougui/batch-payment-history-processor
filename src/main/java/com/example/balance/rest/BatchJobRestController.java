@@ -1,5 +1,7 @@
 package com.example.balance.rest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/batch")
 public class BatchJobRestController {
+
+    private static final Logger logger = LoggerFactory.getLogger(BatchJobRestController.class);
 
     @Autowired
     private JobLauncher jobLauncher;
@@ -30,7 +34,8 @@ public class BatchJobRestController {
             jobLauncher.run(job, jobParameters);
             return ResponseEntity.ok("Batch job started successfully");
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Batch job failed: " + e.getMessage());
+            logger.error("Failed to start batch job", e);
+            return ResponseEntity.internalServerError().body("Batch job failed. Please contact support.");
         }
     }
 
@@ -43,7 +48,8 @@ public class BatchJobRestController {
             jobLauncher.run(job, jobParameters);
             return ResponseEntity.ok("Batch job started successfully (GET)");
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Batch job failed: " + e.getMessage());
+            logger.error("Failed to start batch job", e);
+            return ResponseEntity.internalServerError().body("Batch job failed. Please contact support.");
         }
     }
 }
