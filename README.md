@@ -1,56 +1,69 @@
-# Banking Balance File Processing
+# Batch Payment History Processor
 
-Process flat files (doc, docx, csv) containing banking records like client name, payment card type, transaction amount, transaction date, real balance, and fictitious balance using batch processing.
+Reads fixed-width payment history records, transforms transaction data with Spring Batch, and stores the results in an in-memory H2 database.
 
-## Description
+## Application Preview
 
-This project processes banking records using Spring Batch to store the resulting data in an object-based database. The input data includes client information, payment card types, transaction details, and balances (real and fictitious). The batch program is based on a single job comprising multiple independent steps, each consisting of:
+![Illustration of the payment transaction processing pipeline](assets/payment-transaction-pipeline.jpg)
 
-- **Reader**: Reads lines from the flat file.
-- **Processor**: Performs ORM mapping.
-- **Writer**: Saves records to the target relational database.
+> **Implementation note:** The illustration is conceptual. The current job skips the first input line, processes the remaining fixed-width records in chunks, and persists them through Spring Data JPA. It does not yet validate separate header, body, or trailer records.
 
-## Topics
+## Features
 
-- java
-- spring-boot
-- eclipse-ide
-- h2-in-memory-database
-- maven
-- restful-api
-- spring-batch
-- spring-mvc
-
-## Prerequisites
-
-- Java 11 or higher
-- Maven 3.6.0 or higher
+- Reads the bundled `src/main/resources/input.csv` file with a fixed-width tokenizer.
+- Processes records in Spring Batch chunks of 10.
+- Maps input fields, uppercases card types, and formats balances as USD.
+- Saves processed records to an in-memory H2 database using Spring Data JPA.
+- Starts a batch run through `POST /batch/run` (or `GET /batch/run`).
+- Exposes the H2 console at `/h2-console` while the application is running.
 
 ## Installation
 
+### Requirements
+
+- Java 21
+- Maven, or the included Maven Wrapper
+
+### Build and run
+
 1. Clone the repository:
-    ```bash
-    git clone https://github.com/haddouguihamza/Banking-BalanceFileProcessing.git
-    cd Banking-BalanceFileProcessing
-    ```
 
-2. Build the project using Maven:
-    ```bash
-    mvn clean install
-    ```
+   ```sh
+   git clone https://github.com/hamza-haddougui/batch-payment-history-processor.git
+   cd batch-payment-history-processor
+   ```
 
-## Usage
+2. Build the application:
 
-1. To run the batch process, execute the following command:
-    ```bash
-    mvn spring-boot:run
-    ```
+   ```sh
+   # macOS/Linux
+   ./mvnw clean package
 
-2. Place your input files in the specified directory (update the configuration if necessary).
+   # Windows PowerShell
+   .\mvnw.cmd clean package
+   ```
 
-3. Check the output directory for the processed files.
+3. Start the service:
+
+   ```sh
+   # macOS/Linux
+   ./mvnw spring-boot:run
+
+   # Windows PowerShell
+   .\mvnw.cmd spring-boot:run
+   ```
+
+4. In another terminal, launch the batch job:
+
+   ```sh
+   curl -X POST http://localhost:8080/batch/run
+   ```
+
+The service listens on port `8080`. The input file is packaged with the application, and the in-memory database is reset when the application stops.
 
 ## Contributing
+
+PRs welcome 🎉.
 
 1. Fork the repository.
 2. Create a new branch (`git checkout -b feature-branch`).
@@ -60,4 +73,4 @@ This project processes banking records using Spring Batch to store the resulting
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
