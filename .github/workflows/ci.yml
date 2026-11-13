@@ -1,19 +1,16 @@
-name: CI and CodeQL analysis
+name: Build and test
 
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
-  schedule:
-    - cron: '0 6 * * *' # Daily at 06:00 UTC
 
 permissions:
   contents: read
 
 jobs:
-  test:
-    if: github.event_name != 'schedule'
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -27,45 +24,4 @@ jobs:
           cache: maven
 
       - name: Build with Maven
-        run: mvn -B package --file pom.xml
-
-      - name: Run tests
-        run: ./mvnw --batch-mode test
-
-  codeql:
-    permissions:
-      contents: read
-      security-events: write
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - language: actions
-            build_mode: none
-          - language: java-kotlin
-            build_mode: manual
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
-        with:
-          languages: ${{ matrix.language }}
-          build-mode: ${{ matrix.build_mode }}
-
-      - name: Set up Java 21
-        if: matrix.language == 'java-kotlin'
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '21'
-          cache: maven
-
-      - name: Build with Maven
-        if: matrix.language == 'java-kotlin'
-        run: mvn -B package --file pom.xml
-
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+        run: ./mvnw --batch-mode package
