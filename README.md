@@ -33,7 +33,19 @@ Reads fixed-width payment history records, transforms transaction data with Spri
    cd batch-payment-history-processor
    ```
 
-2. Build the application:
+2. Create the local application configuration from the safe example:
+
+   ```sh
+   # macOS/Linux
+   cp src/main/resources/application.properties.example src/main/resources/application.properties
+
+   # Windows PowerShell
+   Copy-Item src/main/resources/application.properties.example src/main/resources/application.properties
+   ```
+
+   The local `application.properties` and `.env` files are ignored by Git. The example contains only local H2 development settings.
+
+3. Build the application:
 
    ```sh
    # macOS/Linux
@@ -43,7 +55,7 @@ Reads fixed-width payment history records, transforms transaction data with Spri
    .\mvnw.cmd clean package
    ```
 
-3. Start the service:
+4. Start the service:
 
    ```sh
    # macOS/Linux
@@ -53,13 +65,13 @@ Reads fixed-width payment history records, transforms transaction data with Spri
    .\mvnw.cmd spring-boot:run
    ```
 
-4. In another terminal, launch the batch job:
+5. In another terminal, launch the batch job:
 
    ```sh
    curl -X POST http://localhost:8080/batch/run
    ```
 
-The service listens on port `8080`. The input file is packaged with the application, and the in-memory database is reset when the application stops.
+The service listens on port `8080`. The batch reader currently loads `input.csv` from the classpath; its path is not configurable through `application.properties`. The sample file contains fictional, fixed-width records and its first line is skipped. The in-memory database is reset when the application stops.
 
 ## Contributing
 
