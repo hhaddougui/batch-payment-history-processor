@@ -1,7 +1,7 @@
 package com.example.balance.job.config;
 
 import java.util.Locale;
-import org.springframework.batch.item.ItemProcessor;
+import org.springframework.batch.infrastructure.item.ItemProcessor;
 import org.springframework.stereotype.Component;
 import com.example.balance.dao.InputDetailRecord;
 import com.example.balance.dao.OutputDetailRecord;
